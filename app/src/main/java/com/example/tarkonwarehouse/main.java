@@ -65,6 +65,7 @@ public class main extends AppCompatActivity {
 
         // Przykład: Powrót do ekranu logowania
         getIntent().removeExtra("user");
+        jwtToken="";
         Intent intent = new Intent(this, login.class);
         startActivity(intent);
         finish(); // Opcjonalnie zamyka aktualną aktywność, aby użytkownik nie mógł wrócić przyciskiem "Wstecz"
