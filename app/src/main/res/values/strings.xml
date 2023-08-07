@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Tarkon Warehouse</string>
+    <string name="user">Nazwa użytkownika:</string>
+    <string name="haslo">Hasło</string>
+    <string name="login">LOGIN</string>
+    <string name="zaloguj">Zaloguj się</string>
+    <string name="zmien">Dark mode</string>
+</resources>
