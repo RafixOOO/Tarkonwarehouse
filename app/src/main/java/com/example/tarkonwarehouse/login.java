@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.sql.Connection;
@@ -58,8 +59,10 @@ public class login extends AppCompatActivity {
                             try {
                                 if (comparePasswords(password.getText().toString(), hashedPasswordFromDatabase)) {
                                     // Hasło jest poprawne - przejdź do kolejnej aktywności
+                                    String username = user.getText().toString();
                                     Toast.makeText(login.this, "Uwierzytelnienie powiodło się!", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(login.this, main.class);
+                                    intent.putExtra("user", username);
                                     startActivity(intent);
                                 }
                             }catch(Exception exception){

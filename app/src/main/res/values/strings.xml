@@ -4,5 +4,7 @@
     <string name="haslo">Hasło</string>
     <string name="login">LOGIN</string>
     <string name="zaloguj">Zaloguj się</string>
-    <string name="zmien">Dark mode</string>
+    <string name="newpassword">Nowe hasło</string>
+    <string name="oldpassword">Stare hasło</string>
+    <string name="zmien">Zmień</string>
 </resources>
