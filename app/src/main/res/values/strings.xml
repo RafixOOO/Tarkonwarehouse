@@ -7,4 +7,8 @@
     <string name="newpassword">Nowe hasło</string>
     <string name="oldpassword">Stare hasło</string>
     <string name="zmien">Zmień</string>
+    <string name="scanner">Skanuj</string>
+    <string name="magazyn">magazyn</string>
+    <string name="usun">Usuń</string>
+    <string name="dodaj">Dodaj</string>
 </resources>

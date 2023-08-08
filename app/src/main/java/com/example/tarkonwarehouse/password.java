@@ -11,12 +11,30 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class password extends AppCompatActivity {
+
+    public static boolean comparePasswords(String plainPassword, String hashedPassword) {
+        BCrypt.Verifyer verifyer = BCrypt.verifyer();
+        BCrypt.Result result = verifyer.verify(plainPassword.toCharArray(), hashedPassword);
+        if (result.verified) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +47,6 @@ public class password extends AppCompatActivity {
 
         String jwtToken = getIntent().getStringExtra("user");
 
-        Log.d("JWT", "Token "+jwtToken);
 
         // Weryfikacja tokenu
         if (jwtToken != null) {
@@ -39,6 +56,52 @@ public class password extends AppCompatActivity {
             startActivity(intent);
 
         }
+
+        EditText old = (EditText) findViewById(R.id.oldpasswordEditText);
+        EditText newpassword = (EditText) findViewById(R.id.newpasswordEditText);
+        Button button = (Button) findViewById(R.id.passwordButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Connection connection = connectionclass();
+                try {
+                    if (connection != null) {
+                        String query = "SELECT * FROM [PartCheck].[dbo].[Persons] WHERE [user] = '" + jwtToken + "';";
+                        Statement st = connection.createStatement();
+                        ResultSet rs = st.executeQuery(query);
+
+                        if (rs.next()) {
+                            String hashedPasswordFromDatabase = rs.getString("password");
+                            try {
+                                if (comparePasswords(old.getText().toString(), hashedPasswordFromDatabase)) {
+                                    // Hasło jest poprawne - przejdź do kolejnej aktywności
+                                    Toast.makeText(password.this, "Hasło zostało zmeinione!", Toast.LENGTH_SHORT).show();
+                                    String query1 = "UPDATE [dbo].[Persons] SET  [password] ='"+BCrypt.withDefaults().hashToString(10,newpassword.getText().toString().toCharArray())+"' WHERE [user]='" + jwtToken + "';";
+                                    Statement st1 = connection.createStatement();
+                                    st1.executeUpdate(query1);
+
+                                    Intent intent = new Intent(password.this, main.class);
+                                    intent.putExtra("user", jwtToken);
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(password.this, "Hasła nie są takie same!", Toast.LENGTH_SHORT).show();
+                                }
+                            }catch(Exception exception){
+                                Toast.makeText(password.this, "Wystąpił błąd!", Toast.LENGTH_SHORT).show();
+                                exception.printStackTrace();
+                            }
+                        }else {
+                            // Hasło jest niepoprawne
+                            Toast.makeText(password.this, "Wystapił bład! ", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Override

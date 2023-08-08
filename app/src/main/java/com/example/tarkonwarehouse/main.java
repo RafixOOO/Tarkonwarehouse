@@ -7,15 +7,24 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 
 public class main extends AppCompatActivity {
 
+    private Button scanButton;
+    private TextView resultTextView;
     private String jwtToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,36 @@ public class main extends AppCompatActivity {
             Intent intent = new Intent(this, login.class);
             startActivity(intent);
 
+        }
+
+        scanButton = findViewById(R.id.scanButton);
+        resultTextView = findViewById(R.id.resultTextView);
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Inicjalizacja skanera
+                IntentIntegrator integrator = new IntentIntegrator(main.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+                integrator.setPrompt("Zeskanuj kod kreskowy lub QR Code");
+                integrator.setOrientationLocked(false);
+                integrator.initiateScan();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() != null) {
+                // Wyświetl zeskanowany kod
+                resultTextView.setText("Zeskanowany kod: " + result.getContents());
+            } else {
+                Log.e("main", "Błąd skanowania");
+            }
         }
     }
 

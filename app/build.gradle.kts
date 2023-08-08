@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation ("at.favre.lib:bcrypt:0.10.2")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
