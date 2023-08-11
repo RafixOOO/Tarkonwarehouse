@@ -64,6 +64,7 @@ public class login extends AppCompatActivity {
                                     Intent intent = new Intent(login.this, main.class);
                                     intent.putExtra("user", username);
                                     startActivity(intent);
+                                    finish();
                                 }else{
                                     Toast.makeText(login.this, "Niepoprawne dane logowania! ", Toast.LENGTH_SHORT).show();
                                 }
