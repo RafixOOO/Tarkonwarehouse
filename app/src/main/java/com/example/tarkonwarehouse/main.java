@@ -60,9 +60,6 @@ public class main extends AppCompatActivity {
             startActivity(intent);
             return true;
         }else if(item.getItemId() == R.id.main){
-            Intent intent = new Intent(this, main.class);
-            intent.putExtra("user", jwtToken);
-            startActivity(intent);
             return true;
         }
         else if (item.getItemId() == R.id.logout) {
