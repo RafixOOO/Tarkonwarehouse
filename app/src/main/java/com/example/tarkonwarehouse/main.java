@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -43,7 +42,6 @@ public class main extends AppCompatActivity {
                 Intent intent = new Intent(main.this, magazyn.class);
                 intent.putExtra("user", jwtToken);
                 startActivity(intent);
-                finish();
             }
         });
     }
