@@ -26,6 +26,8 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class password extends AppCompatActivity {
 
+    private String jwtToken;
+
     public static boolean comparePasswords(String plainPassword, String hashedPassword) {
         BCrypt.Verifyer verifyer = BCrypt.verifyer();
         BCrypt.Result result = verifyer.verify(plainPassword.toCharArray(), hashedPassword);
@@ -45,7 +47,7 @@ public class password extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String jwtToken = getIntent().getStringExtra("user");
+        jwtToken = getIntent().getStringExtra("user");
 
 
         // Weryfikacja tokenu
@@ -114,6 +116,11 @@ public class password extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.change) {
             // Obsługa akcji zmiany
+            return true;
+        }else if(item.getItemId() == R.id.main){
+            Intent intent = new Intent(this, main.class);
+            intent.putExtra("user", jwtToken);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.logout) {
             performLogout();

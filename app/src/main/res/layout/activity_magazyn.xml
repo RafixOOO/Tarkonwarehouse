@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundlight"
     android:orientation="vertical"
-    tools:context=".magazyn">
+    tools:context=".main">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,19 +19,43 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/magazynopen"
+            android:id="@+id/dodajnopen"
             android:layout_width="0dp"
             android:layout_height="90dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.4"
-            android:text="@string/dodaj" />
+            android:text="@string/dod" />
 
         <Button
+            android:id="@+id/usunopen"
             android:layout_width="0dp"
             android:layout_height="90dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.4"
-            android:text="@string/usun" />
+            android:text="@string/usu" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/przeniesopen"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.4"
+            android:text="@string/przn" />
+
+        <Button
+            android:id="@+id/znajdzopen"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.4"
+            android:text="@string/znajdz" />
 
     </LinearLayout>
 

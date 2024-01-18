@@ -1,26 +1,22 @@
 package com.example.tarkonwarehouse;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-
-
-public class main extends AppCompatActivity {
+public class magazyn extends AppCompatActivity {
 
     private String jwtToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_magazyn);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -29,23 +25,12 @@ public class main extends AppCompatActivity {
 
         // Weryfikacja tokenu
         if (jwtToken != null && !jwtToken.isEmpty()) {
-            Toast.makeText(this, "Witaj " + jwtToken, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Magazyn", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, login.class);
             startActivity(intent);
             finish(); // Dodaj finish, aby zakończyć bieżącą aktywność, jeśli nie ma tokenu
         }
-
-        Button magazyn = findViewById(R.id.magazynopen);
-        magazyn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(main.this, magazyn.class);
-                intent.putExtra("user", jwtToken);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 
     @Override

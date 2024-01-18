@@ -9,6 +9,11 @@
     <string name="zmien">Zmień</string>
     <string name="scanner">Skanuj</string>
     <string name="magazyn">magazyn</string>
-    <string name="usun">Usuń</string>
-    <string name="dodaj">Dodaj</string>
+    <string name="usun">Inwentaryzacja</string>
+    <string name="dodaj">Magazyn</string>
+    <string name="znajdz">Znajdź</string>
+    <string name="dod">dodaj</string>
+    <string name="usu">Usuń</string>
+    <string name="przn">Przenieś</string>
+
 </resources>
