@@ -8,11 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class ustallokalizacje extends AppCompatActivity {
 
     private String jwtToken;
+
+    ToggleButton check1, check2, check3, check4, check5, check6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +29,73 @@ public class ustallokalizacje extends AppCompatActivity {
 
         // Weryfikacja tokenu
         if (jwtToken != null && !jwtToken.isEmpty()) {
-            Toast.makeText(this, "Magazyn", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lokalizacja", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(this, login.class);
             startActivity(intent);
             finish(); // Dodaj finish, aby zakończyć bieżącą aktywność, jeśli nie ma tokenu
+        }
+
+        check1 = findViewById(R.id.check1);
+        check2 = findViewById(R.id.check2);
+        check3 = findViewById(R.id.check3);
+        check4 = findViewById(R.id.check4);
+        check5 = findViewById(R.id.check5);
+        check6 = findViewById(R.id.check6);
+
+        // Przypisanie obsługi zdarzenia kliknięcia do każdego przycisku
+        check1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check1);
+            }
+        });
+
+        check2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check2);
+            }
+        });
+
+        check3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check3);
+            }
+        });
+
+        check4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check4);
+            }
+        });
+
+        check5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check5);
+            }
+        });
+
+        check6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check6);
+            }
+        });
+    }
+
+    private void uncheckOtherButtons(ToggleButton currentButton) {
+        // Wyłącz wszystkie inne przyciski oprócz tego, który został kliknięty
+        if (currentButton != null) {
+            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6};
+            for (ToggleButton button : buttons) {
+                if (button != currentButton) {
+                    button.setChecked(false);
+                }
+            }
         }
     }
 

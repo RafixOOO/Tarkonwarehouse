@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class magazyn extends AppCompatActivity {
@@ -31,6 +33,16 @@ public class magazyn extends AppCompatActivity {
             startActivity(intent);
             finish(); // Dodaj finish, aby zakończyć bieżącą aktywność, jeśli nie ma tokenu
         }
+
+        Button magazyn = findViewById(R.id.dodajnopen);
+        magazyn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(magazyn.this, ustallokalizacje.class);
+                intent.putExtra("user", jwtToken);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
