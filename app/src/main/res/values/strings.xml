@@ -11,8 +11,8 @@
     <string name="magazyn">magazyn</string>
     <string name="usun">Inwentaryzacja</string>
     <string name="dodaj">Magazyn</string>
-    <string name="znajdz">Znajdź</string>
-    <string name="dod">dodaj</string>
+    <string name="znajdz">Znajdź lokalizacje</string>
+    <string name="dod">Ustal lokalizację</string>
     <string name="usu">Usuń</string>
     <string name="przn">Przenieś</string>
 
