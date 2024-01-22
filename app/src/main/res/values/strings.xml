@@ -14,6 +14,12 @@
     <string name="znajdz">Znajdź lokalizacje</string>
     <string name="dod">Ustal lokalizację</string>
     <string name="usu">Usuń</string>
+    <string name="lok1">Lokalizacja I</string>
+    <string name="lok2">Lokalizacja II</string>
+    <string name="lok3">Lokalizacja III</string>
+    <string name="lok4">Lokalizacja IV</string>
+    <string name="lok5">Lokalizacja V</string>
+    <string name="lok6">Lokalizacja VI</string>
     <string name="przn">Przenieś</string>
 
 </resources>
