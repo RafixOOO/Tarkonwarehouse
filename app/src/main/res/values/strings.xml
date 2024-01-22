@@ -20,6 +20,12 @@
     <string name="lok4">Lokalizacja IV</string>
     <string name="lok5">Lokalizacja V</string>
     <string name="lok6">Lokalizacja VI</string>
+    <string name="lok11">Lokalizacja I (Aktywne)</string>
+    <string name="lok22">Lokalizacja II (Aktywne)</string>
+    <string name="lok33">Lokalizacja III (Aktywne)</string>
+    <string name="lok44">Lokalizacja IV (Aktywne)</string>
+    <string name="lok55">Lokalizacja V (Aktywne)</string>
+    <string name="lok66">Lokalizacja VI (Aktywne)</string>
     <string name="przn">Przenieś</string>
 
 </resources>
