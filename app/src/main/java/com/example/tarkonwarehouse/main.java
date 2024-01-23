@@ -54,12 +54,7 @@ public class main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.change) {
-            Intent intent = new Intent(this, password.class);
-            intent.putExtra("user", jwtToken);
-            startActivity(intent);
-            return true;
-        }else if(item.getItemId() == R.id.main){
+         if(item.getItemId() == R.id.main){
             return true;
         }
         else if (item.getItemId() == R.id.logout) {

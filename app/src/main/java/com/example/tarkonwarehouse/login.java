@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
-
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,76 +20,83 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 
 public class login extends AppCompatActivity {
 
-    private EditText user;
-    private EditText password;
-    public static boolean comparePasswords(String plainPassword, String hashedPassword) {
-        BCrypt.Verifyer verifyer = BCrypt.verifyer();
-        BCrypt.Result result = verifyer.verify(plainPassword.toCharArray(), hashedPassword);
-        if (result.verified) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    private Spinner usernameSpinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        user = (EditText) findViewById(R.id.usernameEditText);
-        password = (EditText) findViewById(R.id.passwordEditText);
-        Button button = (Button) findViewById(R.id.loginButton);
 
+        Button button = (Button) findViewById(R.id.loginButton);
+        usernameSpinner = findViewById(R.id.usernameSpinner);
+
+
+        Connection connection = connectionclass();
+        try {
+            if (connection != null) {
+                String query = "SELECT imie_nazwisko FROM PartCheck.dbo.Persons where [user] = '' ;";
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(query);
+
+                List<String> usernamesList = new ArrayList<>();
+
+                while (rs.next()) {
+                    String username = rs.getString("imie_nazwisko");
+                    usernamesList.add(username);
+                }
+
+                // Konwertuj List na tablicę String[]
+                String[] usernames = usernamesList.toArray(new String[0]);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, usernames);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                usernameSpinner.setAdapter(adapter);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Toast.makeText(login.this, "Wystąpił błąd podczas pobierania danych z bazy", Toast.LENGTH_SHORT).show();
+        }
+
+        // Obsłuż wybór z listy
+        usernameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedUsername = (String) parentView.getItemAtPosition(position);
+                Toast.makeText(login.this, "Wybrano: " + selectedUsername, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Nie trzeba implementować, ale musi być obecna ze względu na interfejs AdapterView.OnItemSelectedListener
+            }
+        });
+
+        // Obsługa przycisku logowania
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Connection connection = connectionclass();
-                try {
-                    if (connection != null) {
-                        String query = "SELECT * FROM [PartCheck].[dbo].[Persons] WHERE [user] = '" + user.getText().toString() + "';";
-                        Statement st = connection.createStatement();
-                        ResultSet rs = st.executeQuery(query);
-
-                        if (rs.next()) {
-                            String hashedPasswordFromDatabase = rs.getString("password");
-                            try {
-                                if (comparePasswords(password.getText().toString(), hashedPasswordFromDatabase)) {
-                                    // Hasło jest poprawne - przejdź do kolejnej aktywności
-                                    String username = user.getText().toString();
-                                    Toast.makeText(login.this, "Uwierzytelnienie powiodło się!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(login.this, main.class);
-                                    intent.putExtra("user", username);
-                                    startActivity(intent);
-                                    finish();
-                                }else{
-                                    Toast.makeText(login.this, "Niepoprawne dane logowania! ", Toast.LENGTH_SHORT).show();
-                                }
-                            }catch(Exception exception){
-                                Toast.makeText(login.this, "Wystąpił błąd! ", Toast.LENGTH_SHORT).show();
-                                exception.printStackTrace();
-                            }
-                        }else {
-                                // Hasło jest niepoprawne
-                                Toast.makeText(login.this, "Brak użytkownika! ", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                String selectedUsername = (String) usernameSpinner.getSelectedItem();
+                Intent intent = new Intent(login.this, main.class);
+                intent.putExtra("user", selectedUsername);
+                startActivity(intent);
+                finish();
             }
         });
     }
+
     @SuppressLint("NewApi")
-        public Connection connectionclass(){
-            Connection con=null;
-            String ip="10.100.100.48", port="49827",username="Sa",password="Shark1445NE$T", databasename="PartCheck";
+    public Connection connectionclass(){
+        Connection con=null;
+        String ip="10.100.100.48", port="49827",username="Sa",password="Shark1445NE$T", databasename="PartCheck";
         StrictMode.ThreadPolicy tp= new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(tp);
         try{
@@ -99,6 +108,7 @@ public class login extends AppCompatActivity {
         }
         return con;
     }
+
 
 
 }

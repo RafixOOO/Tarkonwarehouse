@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundlight"
     android:orientation="vertical"
-    tools:context=".main">
+    tools:context=".ustallokalizacje">
 
     <include
         android:id="@+id/toolbar"

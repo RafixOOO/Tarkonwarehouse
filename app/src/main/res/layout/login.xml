@@ -27,29 +27,13 @@
 
         />
 
-    <EditText
-        android:id="@+id/usernameEditText"
+    <Spinner
+        android:id="@+id/usernameSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="30dp"
         />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/haslo"
-        android:layout_marginHorizontal="30dp"
-
-        />
-
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginBottom="30dp"
-        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/loginButton"

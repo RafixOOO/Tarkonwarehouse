@@ -3,9 +3,6 @@
     <item
         android:id="@+id/main"
         android:title="Strona główna" />
-    <item
-        android:id="@+id/change"
-        android:title="Zmień hasło" />
     <item android:id="@+id/logout"
         android:title="Wyloguj się" />
 </menu>
