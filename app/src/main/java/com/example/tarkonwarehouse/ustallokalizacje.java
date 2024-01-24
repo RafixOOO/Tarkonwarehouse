@@ -4,31 +4,37 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import java.time.LocalDateTime;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class ustallokalizacje extends AppCompatActivity {
 
     private String jwtToken;
-    private int number;
+    private int number = 0 ;
     private String name;
-    private LocalDateTime dateTime;
 
-    private Spinner usernameSpinner;
+    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15;
+
 
 
     @Override
@@ -39,7 +45,6 @@ public class ustallokalizacje extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         jwtToken = getIntent().getStringExtra("user");
-        usernameSpinner = findViewById(R.id.usernameSpinner);
         EditText edittext = findViewById(R.id.edittext1);
         edittext.requestFocus();
         Button button = findViewById(R.id.button);
@@ -60,19 +65,180 @@ public class ustallokalizacje extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ustallokalizacje.this, name, Toast.LENGTH_SHORT).show();
                 edittext.setText("");
+
+                Connection connection = connectionclass();
+                    if (connection != null) {
+                        String query1 = "SELECT SheetName FROM SNDBASE_PROD.dbo.Stock WHERE SheetName=?";
+
+                        try (PreparedStatement selectStatement = connection.prepareStatement(query1)) {
+                            selectStatement.setString(1, name);
+                            ResultSet rs = selectStatement.executeQuery();
+
+                            if (number != 0 && rs.next()) {
+                                String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
+
+                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                    insertStatement.setString(1, name);
+                                    insertStatement.setString(2, jwtToken);
+                                    insertStatement.setInt(3, number);
+
+                                    insertStatement.executeUpdate();
+                                }
+
+                                Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
+
+                            } else {
+                                Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji lub SheetName nie istnieje", Toast.LENGTH_LONG).show();
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dodawania danych do bazy", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+        });
+
+        check1 = findViewById(R.id.check1);
+        check2 = findViewById(R.id.check2);
+        check3 = findViewById(R.id.check3);
+        check4 = findViewById(R.id.check4);
+        check5 = findViewById(R.id.check5);
+        check6 = findViewById(R.id.check6);
+        check7 = findViewById(R.id.check7);
+        check8 = findViewById(R.id.check8);
+        check9 = findViewById(R.id.check9);
+        check10 = findViewById(R.id.check10);
+        check11 = findViewById(R.id.check11);
+        check12 = findViewById(R.id.check12);
+        check13 = findViewById(R.id.check13);
+        check14 = findViewById(R.id.check14);
+        check15 = findViewById(R.id.check15);
+
+        // Przypisanie obsługi zdarzenia kliknięcia do każdego przycisku
+        check1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check1);
+                number =1;
             }
         });
 
+        check2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check2);
+                number =2;
+            }
+        });
 
+        check3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check3);
+                number =3;
+            }
+        });
 
-        String[] usernames = {"1", "2", "3", "4", "5", "6"};
+        check4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check4);
+                number =4;
+            }
+        });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, usernames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        check5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check5);
+                number =5;
+            }
+        });
 
-        usernameSpinner.setAdapter(adapter);
+        check6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check6);
+                number =6;
+            }
+        });
+
+        check7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check7);
+                number =7;
+            }
+        });
+
+        check8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check8);
+                number =8;
+            }
+        });
+
+        check9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check9);
+                number =9;
+            }
+        });
+
+        check10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check10);
+                number =10;
+            }
+        });
+
+        check11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check11);
+                number =11;
+            }
+        });
+
+        check12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check12);
+                number =12;
+            }
+        });
+
+        check13.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check13);
+                number =13;
+            }
+        });
+
+        check14.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check14);
+                number =14;
+            }
+        });
+
+        check15.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(check15);
+                number =15;
+            }
+        });
+
 
         // Weryfikacja tokenu
         if (jwtToken != null && !jwtToken.isEmpty()) {
@@ -81,6 +247,18 @@ public class ustallokalizacje extends AppCompatActivity {
             Intent intent = new Intent(this, login.class);
             startActivity(intent);
             finish(); // Dodaj finish, aby zakończyć bieżącą aktywność, jeśli nie ma tokenu
+        }
+    }
+
+    private void uncheckOtherButtons(ToggleButton currentButton) {
+        // Wyłącz wszystkie inne przyciski oprócz tego, który został kliknięty
+        if (currentButton != null) {
+            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14,check15};
+            for (ToggleButton button : buttons) {
+                if (button != currentButton) {
+                    button.setChecked(false);
+                }
+            }
         }
     }
 
@@ -115,5 +293,21 @@ public class ustallokalizacje extends AppCompatActivity {
         Intent intent = new Intent(this, login.class);
         startActivity(intent);
         finish(); // Opcjonalnie zamyka aktualną aktywność, aby użytkownik nie mógł wrócić przyciskiem "Wstecz"
+    }
+
+    @SuppressLint("NewApi")
+    public Connection connectionclass(){
+        Connection con=null;
+        String ip="10.100.100.48", port="49827",username="Sa",password="Shark1445NE$T", databasename="PartCheck";
+        StrictMode.ThreadPolicy tp= new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(tp);
+        try{
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            String connectionUrl="jdbc:jtds:sqlserver://"+ip+":"+port+";databasename="+databasename+";User="+username+";password="+password+";";
+            con= DriverManager.getConnection(connectionUrl);
+        }catch(Exception exception){
+            Log.e("Error",exception.getMessage());
+        }
+        return con;
     }
     }
