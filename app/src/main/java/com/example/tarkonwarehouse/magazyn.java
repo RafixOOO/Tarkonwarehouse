@@ -43,6 +43,16 @@ public class magazyn extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button znajdz = findViewById(R.id.znajdzopen);
+        znajdz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(magazyn.this, zajdzlokalizacje.class);
+                intent.putExtra("user", jwtToken);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

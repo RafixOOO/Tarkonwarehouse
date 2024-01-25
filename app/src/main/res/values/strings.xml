@@ -48,5 +48,6 @@
     <string name="recznieo">Ręcznie(Aktywne)</string>
     <string name="przn">Przenieś</string>
     <string name="send">Wyślij</string>
+    <string name="arkusz">Nazwa Arkusza</string>
 
 </resources>

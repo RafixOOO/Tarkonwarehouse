@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class ustallokalizacje extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class ustallokalizacje extends AppCompatActivity {
     private int number = 0 ;
     private String name;
 
-    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15;
+    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15, recznie;
 
 
 
@@ -117,6 +117,7 @@ public class ustallokalizacje extends AppCompatActivity {
         check13 = findViewById(R.id.check13);
         check14 = findViewById(R.id.check14);
         check15 = findViewById(R.id.check15);
+        recznie = findViewById(R.id.recznie);
 
         // Przypisanie obsługi zdarzenia kliknięcia do każdego przycisku
         check1.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +240,21 @@ public class ustallokalizacje extends AppCompatActivity {
             }
         });
 
+        recznie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button.setVisibility(recznie.isChecked() ? View.VISIBLE : View.GONE);
+
+                if (recznie.isChecked()) {
+                    // Po kliknięciu
+                    setEditTextLayoutParams(edittext, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                } else {
+                    // Po odkliknięciu
+                    setEditTextLayoutParams(edittext, 1, 1);
+                }
+            }
+        });
+
 
         // Weryfikacja tokenu
         if (jwtToken != null && !jwtToken.isEmpty()) {
@@ -260,6 +276,13 @@ public class ustallokalizacje extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void setEditTextLayoutParams(EditText editText, int width, int height) {
+        ViewGroup.LayoutParams params = editText.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        editText.setLayoutParams(params);
     }
 
     @Override
