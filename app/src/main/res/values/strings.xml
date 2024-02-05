@@ -49,5 +49,7 @@
     <string name="przn">Przenieś</string>
     <string name="send">Wyślij</string>
     <string name="arkusz">Nazwa Arkusza</string>
+    <string name="koop">Kooperacja</string>
+    <string name="koopo">Kooperacja(Aktywne)</string>
 
 </resources>

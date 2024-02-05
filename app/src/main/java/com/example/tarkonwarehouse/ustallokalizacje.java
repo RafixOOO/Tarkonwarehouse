@@ -3,11 +3,13 @@ package com.example.tarkonwarehouse;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -33,7 +35,7 @@ public class ustallokalizacje extends AppCompatActivity {
     private int number = 0 ;
     private String name;
 
-    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15, recznie;
+    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15, recznie, koop;
 
 
 
@@ -45,29 +47,32 @@ public class ustallokalizacje extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         jwtToken = getIntent().getStringExtra("user");
-        EditText edittext = findViewById(R.id.edittext1);
+        EditText edittext = findViewById(R.id.edittext2);
+        edittext.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        edittext.setImeOptions(EditorInfo.IME_FLAG_NO_FULLSCREEN);
+        EditText edittext1 = findViewById(R.id.edittext1);
         edittext.requestFocus();
-        Button button = findViewById(R.id.button);
-
+        Button button = findViewById(R.id.button1);
+        Button button1 = findViewById(R.id.button);
+        edittext.requestFocus();
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
                     // Wywołaj akcję przycisku, np. kliknięcie
-                    name = edittext.getText().toString();
                     button.performClick();
                     return true;
                 }
                 return false;
             }
         });
-
+        Connection connection = connectionclass();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                name = edittext.getText().toString();
                 edittext.setText("");
 
-                Connection connection = connectionclass();
                     if (connection != null) {
                         String query1 = "SELECT SheetName FROM SNDBASE_PROD.dbo.Stock WHERE SheetName=?";
 
@@ -102,6 +107,40 @@ public class ustallokalizacje extends AppCompatActivity {
                 }
         });
 
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                name = edittext1.getText().toString();
+                edittext1.setText("");
+
+                if (connection != null) {
+                        if (number != 0) {
+                            String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
+
+                            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                insertStatement.setString(1, name);
+                                insertStatement.setString(2, jwtToken);
+                                insertStatement.setInt(3, number);
+
+                                insertStatement.executeUpdate();
+                            }catch (SQLException e) {
+                                e.printStackTrace();
+                                Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
+                            }
+
+                            Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
+
+                        } else {
+                            Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji", Toast.LENGTH_LONG).show();
+                        }
+                }else{
+                    Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dodawania danych do bazy", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
         check1 = findViewById(R.id.check1);
         check2 = findViewById(R.id.check2);
         check3 = findViewById(R.id.check3);
@@ -117,7 +156,26 @@ public class ustallokalizacje extends AppCompatActivity {
         check13 = findViewById(R.id.check13);
         check14 = findViewById(R.id.check14);
         check15 = findViewById(R.id.check15);
+        koop = findViewById(R.id.koop);
         recznie = findViewById(R.id.recznie);
+
+        check1.setBackgroundTintList(null);
+        check2.setBackgroundTintList(null);
+        check3.setBackgroundTintList(null);
+        check4.setBackgroundTintList(null);
+        check5.setBackgroundTintList(null);
+        check6.setBackgroundTintList(null);
+        check7.setBackgroundTintList(null);
+        check8.setBackgroundTintList(null);
+        check9.setBackgroundTintList(null);
+        check10.setBackgroundTintList(null);
+        check11.setBackgroundTintList(null);
+        check12.setBackgroundTintList(null);
+        check13.setBackgroundTintList(null);
+        check14.setBackgroundTintList(null);
+        check15.setBackgroundTintList(null);
+        koop.setBackgroundTintList(null);
+        recznie.setBackgroundTintList(null);
 
         // Przypisanie obsługi zdarzenia kliknięcia do każdego przycisku
         check1.setOnClickListener(new View.OnClickListener() {
@@ -240,17 +298,29 @@ public class ustallokalizacje extends AppCompatActivity {
             }
         });
 
+        koop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(koop);
+                number = 16;
+            }
+        });
+
         recznie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                button.setVisibility(recznie.isChecked() ? View.VISIBLE : View.GONE);
+                button1.setVisibility(recznie.isChecked() ? View.VISIBLE : View.GONE);
 
                 if (recznie.isChecked()) {
                     // Po kliknięciu
-                    setEditTextLayoutParams(edittext, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    setEditTextLayoutParams(edittext1, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    recznie.setBackgroundTintList(ContextCompat.getColorStateList(view.getContext(), R.color.green));
+
                 } else {
                     // Po odkliknięciu
-                    setEditTextLayoutParams(edittext, 1, 1);
+                    setEditTextLayoutParams(edittext1, 1, 1);
+                    recznie.setBackgroundTintList(null);
+                    edittext.requestFocus();
                 }
             }
         });
@@ -269,9 +339,14 @@ public class ustallokalizacje extends AppCompatActivity {
     private void uncheckOtherButtons(ToggleButton currentButton) {
         // Wyłącz wszystkie inne przyciski oprócz tego, który został kliknięty
         if (currentButton != null) {
-            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14,check15};
+            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6, check7, check8, check9, check10, check11, check12, check13, check14, check15, koop};
             for (ToggleButton button : buttons) {
-                if (button != currentButton) {
+                if (button == currentButton) {
+                    // Ustaw tło na zielony dla aktualnie klikniętego przycisku
+                    button.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.green));
+                } else {
+                    // Ustaw tło na domyślne dla pozostałych przycisków
+                    button.setBackgroundTintList(null);
                     button.setChecked(false);
                 }
             }
