@@ -73,14 +73,25 @@ public class ustallokalizacje extends AppCompatActivity {
                 name = edittext.getText().toString();
                 edittext.setText("");
 
-                    if (connection != null) {
-                        String query1 = "SELECT SheetName FROM SNDBASE_PROD.dbo.Stock WHERE SheetName=?";
+                if (connection != null) {
+                    if (number != 0) {
+                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ?";
+                        PreparedStatement checkStatement = null;
+                        ResultSet resultSet = null;
+                        try {
+                            checkStatement = connection.prepareStatement(checkQuery);
+                            checkStatement.setString(1, name);
 
-                        try (PreparedStatement selectStatement = connection.prepareStatement(query1)) {
-                            selectStatement.setString(1, name);
-                            ResultSet rs = selectStatement.executeQuery();
+                            resultSet = checkStatement.executeQuery();
 
-                            if (number != 0 && rs.next()) {
+                            if (resultSet.next()) {
+                                Intent intent = new Intent(ustallokalizacje.this, opcjeustallokalizacje.class);
+                                intent.putExtra("user", jwtToken);
+                                intent.putExtra("name", name);
+                                intent.putExtra("number", number);
+                                startActivity(intent);
+                        }
+                            else {
                                 String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
 
                                 try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
@@ -90,50 +101,70 @@ public class ustallokalizacje extends AppCompatActivity {
 
                                     insertStatement.executeUpdate();
                                 }
-
-                                Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
-
-                            } else {
-                                Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji lub SheetName nie istnieje", Toast.LENGTH_LONG).show();
                             }
-                        } catch (SQLException e) {
+                        }catch (SQLException e) {
                             e.printStackTrace();
                             Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
                         }
-                    }else{
-                        Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dodawania danych do bazy", Toast.LENGTH_LONG).show();
-                    }
 
+                        Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dodawania danych do bazy", Toast.LENGTH_LONG).show();
                 }
+
+            }
         });
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                name = edittext1.getText().toString();
+                name = edittext1.getText().toString().toUpperCase();
                 edittext1.setText("");
 
                 if (connection != null) {
-                        if (number != 0) {
-                            String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
+                    if (number != 0) {
+                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ?";
+                        PreparedStatement checkStatement = null;
+                        ResultSet resultSet = null;
+                        try {
+                            checkStatement = connection.prepareStatement(checkQuery);
+                            checkStatement.setString(1, name);
 
-                            try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
-                                insertStatement.setString(1, name);
-                                insertStatement.setString(2, jwtToken);
-                                insertStatement.setInt(3, number);
+                            resultSet = checkStatement.executeQuery();
 
-                                insertStatement.executeUpdate();
-                            }catch (SQLException e) {
-                                e.printStackTrace();
-                                Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
+                            if (resultSet.next()) {
+                                Intent intent = new Intent(ustallokalizacje.this, opcjeustallokalizacje.class);
+                                intent.putExtra("user", jwtToken);
+                                intent.putExtra("name", name);
+                                intent.putExtra("number", number);
+                                startActivity(intent);
                             }
+                            else {
+                                String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
 
-                            Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
+                                try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                                    insertStatement.setString(1, name);
+                                    insertStatement.setString(2, jwtToken);
+                                    insertStatement.setInt(3, number);
 
-                        } else {
-                            Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji", Toast.LENGTH_LONG).show();
+                                    insertStatement.executeUpdate();
+                                }
+                            }
+                        }catch (SQLException e) {
+                            e.printStackTrace();
+                            Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
                         }
+
+                        Toast.makeText(ustallokalizacje.this, "Arkusz "+name+" został dodany do Lok "+number+" przez "+jwtToken, Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(ustallokalizacje.this, "Nie wybrano lokalizacji", Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     Toast.makeText(ustallokalizacje.this, "Wystąpił błąd podczas dodawania danych do bazy", Toast.LENGTH_LONG).show();
                 }

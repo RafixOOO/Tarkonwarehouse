@@ -51,5 +51,7 @@
     <string name="arkusz">Nazwa Arkusza</string>
     <string name="koop">Kooperacja</string>
     <string name="koopo">Kooperacja(Aktywne)</string>
+    <string name="dodaj1">Dodaj jako nowe</string>
+    <string name="usun1">Usuń</string>
 
 </resources>
