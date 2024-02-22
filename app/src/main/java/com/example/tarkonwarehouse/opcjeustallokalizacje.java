@@ -16,7 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,6 +57,51 @@ public class opcjeustallokalizacje extends AppCompatActivity {
         Button dodaj = findViewById(R.id.dodaj);
         Button usun = findViewById(R.id.usun);
         Button przen = findViewById(R.id.przenies);
+        Spinner spinner = findViewById(R.id.spinner);
+        TextView text = findViewById(R.id.text);
+
+        Button opcja1 = findViewById(R.id.opcja1);
+        Button opcja2 = findViewById(R.id.opcja2);
+        Button opcja3 = findViewById(R.id.opcja3);
+
+        opcja1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dodaj.setVisibility(View.VISIBLE);
+                usun.setVisibility(View.GONE);
+                przen.setVisibility(View.GONE);
+                spinner.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+
+            }
+        });
+
+        opcja2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dodaj.setVisibility(View.GONE);
+                usun.setVisibility(View.GONE);
+                przen.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.VISIBLE);
+                text.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        opcja3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dodaj.setVisibility(View.GONE);
+                usun.setVisibility(View.VISIBLE);
+                przen.setVisibility(View.GONE);
+                spinner.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
+
+            }
+        });
 
 
         Connection connection = connectionclass();
@@ -73,9 +121,6 @@ public class opcjeustallokalizacje extends AppCompatActivity {
 
                     Toast.makeText(opcjeustallokalizacje.this, "Arkusz został dodany", Toast.LENGTH_LONG).show();
 
-                    Intent intent = new Intent(opcjeustallokalizacje.this, ustallokalizacje.class);
-                    intent.putExtra("user", jwtToken);
-                    startActivity(intent);
                     finish();
                 }catch (SQLException e) {
                     e.printStackTrace();
@@ -103,9 +148,6 @@ public class opcjeustallokalizacje extends AppCompatActivity {
                         Toast.makeText(opcjeustallokalizacje.this, "Błąd", Toast.LENGTH_LONG).show();
                     }
 
-                    Intent intent = new Intent(opcjeustallokalizacje.this, ustallokalizacje.class);
-                    intent.putExtra("user", jwtToken);
-                    startActivity(intent);
                     finish();
                 }catch (SQLException e) {
                     e.printStackTrace();
@@ -131,8 +173,6 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(opcjeustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
         }
-
-        Spinner spinner = findViewById(R.id.spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, localizations);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -175,10 +215,6 @@ public class opcjeustallokalizacje extends AppCompatActivity {
                     insertStatement.executeUpdate();
 
                     Toast.makeText(opcjeustallokalizacje.this, "Arkusz został przeniesiony", Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(opcjeustallokalizacje.this, ustallokalizacje.class);
-                    intent.putExtra("user", jwtToken);
-                    startActivity(intent);
                     finish();
                 }catch (SQLException e) {
                     e.printStackTrace();

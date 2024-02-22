@@ -105,43 +105,28 @@ public class zajdzlokalizacje extends AppCompatActivity {
                         try{
 
 
-                            String query = "SELECT " +
-                                    "    m.PartID," +
-                                    "    m.[Date] AS data," +
-                                    "    m2.Person," +
-                                    "    m3.Localization," +
-                                    "    s.Material," +
-                                    "    s.Thickness," +
-                                    "    s.[Length]," +
-                                    "    s.Qty," +
-                                    "    s.Width " +
-                                    "FROM " +
-                                    "    (" +
-                                    "        SELECT " +
-                                    "            PartID, MAX([Date]) AS max_date " +
-                                    "        FROM " +
-                                    "            PartCheck.dbo.MagazynExtra " +
-                                    "        GROUP BY " +
-                                    "            PartID" +
-                                    "    ) max_dates " +
-                                    "INNER JOIN " +
-                                    "    PartCheck.dbo.MagazynExtra m ON max_dates.PartID = m.PartID AND max_dates.max_date = m.[Date] " +
-                                    "LEFT JOIN " +
-                                    "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS " +
-                                    "INNER JOIN " +
-                                    "    PartCheck.dbo.MagazynExtra m2 ON m.MagazynID = m2.MagazynID AND m2.[Date] = max_dates.max_date " +
-                                    "INNER JOIN " +
-                                    "    PartCheck.dbo.MagazynExtra m3 ON m.MagazynID = m3.MagazynID AND m3.[Date] = max_dates.max_date " +
-                                    "WHERE " +
-                                    "    NOT EXISTS (" +
-                                    "        SELECT 1 " +
-                                    "        FROM " +
-                                    "            SNDBASE_PROD.dbo.StockArchive sh " +
-                                    "        WHERE " +
-                                    "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS " +
-                                    "    ) AND m3.Localization = ? " +
-                                    "ORDER BY " +
-                                    "    m.[Date] DESC";
+                            String query = "SELECT \n" +
+                                    "    m.PartID,\n" +
+                                    "    max(m.[Date]) AS data,\n" +
+                                    "    m.Person,\n" +
+                                    "    m.Localization,\n" +
+                                    "    COUNT(m.PartID) AS Ilosc,\n" +
+                                    "    s.Material,\n" +
+                                    "    s.Thickness,\n" +
+                                    "    s.[Length],\n" +
+                                    "    s.Width\n" +
+                                    "FROM PartCheck.dbo.MagazynExtra m\n" +
+                                    "Left JOIN \n" +
+                                    "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
+                                    "        where  NOT EXISTS (\n" +
+                                    "        SELECT 1\n" +
+                                    "        FROM \n" +
+                                    "            SNDBASE_PROD.dbo.StockArchive sh\n" +
+                                    "        WHERE \n" +
+                                    "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
+                                    "    ) and m.Localization = ? \n" +
+                                    "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
+                                    "order by MAX(m.[Date]) DESC;";
 
                             PreparedStatement st = connection.prepareStatement(query);
                             st.setString(1, selectedValue); // Ustawiamy wartość dla parametru zapytania
@@ -157,9 +142,9 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
                                 } else if (j == 1) {
-                                    headerTextView.setText("Data");
-                                } else if (j == 2) {
                                     headerTextView.setText("Lokalizacja");
+                                } else if (j == 2) {
+                                    headerTextView.setText("Ilość");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -170,14 +155,14 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             // Dodaj dane
                             while (rs.next()) {
                                 TableRow dataRow = new TableRow(zajdzlokalizacje.this);
-                                for (int j = 0; j < 3; j++) {
+                                for (int j = 0; j < 4; j++) {
                                     TextView textView = new TextView(zajdzlokalizacje.this);
                                     if (j == 0) {
                                         textView.setText(rs.getString("PartID"));
-                                    } else if (j == 1) {
-                                        textView.setText(rs.getString("data"));
-                                    } else if (j == 2) {
+                                    }  else if (j == 1) {
                                         textView.setText("Lok " + rs.getString("Localization"));
+                                    } else if (j == 2) {
+                                        textView.setText(rs.getString("Ilosc"));
                                     }
 
                                     dataRow.addView(textView);
@@ -200,75 +185,49 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             if(selectedValue.equals("0")){
                                 query = "SELECT \n" +
                                         "    m.PartID,\n" +
-                                        "    m.[Date] AS data,\n" +
-                                        "    m2.Person,\n" +
-                                        "    m3.Localization,\n" +
+                                        "    max(m.[Date]) AS data,\n" +
+                                        "    m.Person,\n" +
+                                        "    m.Localization,\n" +
+                                        "    COUNT(m.PartID) AS Ilosc,\n" +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
                                         "    s.[Length],\n" +
-                                        "    s.Qty,\n" +
-                                        "    s.Width \n" +
-                                        "FROM \n" +
-                                        "    (\n" +
-                                        "        SELECT \n" +
-                                        "            PartID, MAX([Date]) AS max_date\n" +
-                                        "        FROM \n" +
-                                        "            PartCheck.dbo.MagazynExtra\n" +
-                                        "        GROUP BY \n" +
-                                        "            PartID\n" +
-                                        "    ) max_dates\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m ON max_dates.PartID = m.PartID AND max_dates.max_date = m.[Date]\n" +
-                                        "LEFT JOIN \n" +
+                                        "    s.Width\n" +
+                                        "FROM PartCheck.dbo.MagazynExtra m\n" +
+                                        "Left JOIN \n" +
                                         "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m2 ON m.MagazynID = m2.MagazynID AND m2.[Date] = max_dates.max_date\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m3 ON m.MagazynID = m3.MagazynID AND m3.[Date] = max_dates.max_date\n" +
-                                        "WHERE \n" +
-                                        "    NOT EXISTS (\n" +
+                                        "        where  NOT EXISTS (\n" +
                                         "        SELECT 1\n" +
                                         "        FROM \n" +
                                         "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                         "        WHERE \n" +
                                         "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "    ) AND m.PartID LIKE '"+editTextValue+"%' order by m.[Date] desc;";
+                                        "    ) and m.PartID LIKE '"+editTextValue+"%'\n" +
+                                        "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
+                                        "order by MAX(m.[Date]) DESC;";
                             }else{
                                 query = "SELECT \n" +
                                         "    m.PartID,\n" +
-                                        "    m.[Date] AS data,\n" +
-                                        "    m2.Person,\n" +
-                                        "    m3.Localization,\n" +
+                                        "    max(m.[Date]) AS data,\n" +
+                                        "    m.Person,\n" +
+                                        "    m.Localization,\n" +
+                                        "    COUNT(m.PartID) AS Ilosc,\n" +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
                                         "    s.[Length],\n" +
-                                        "    s.Qty,\n" +
-                                        "    s.Width \n" +
-                                        "FROM \n" +
-                                        "    (\n" +
-                                        "        SELECT \n" +
-                                        "            PartID, MAX([Date]) AS max_date\n" +
-                                        "        FROM \n" +
-                                        "            PartCheck.dbo.MagazynExtra\n" +
-                                        "        GROUP BY \n" +
-                                        "            PartID\n" +
-                                        "    ) max_dates\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m ON max_dates.PartID = m.PartID AND max_dates.max_date = m.[Date]\n" +
-                                        "LEFT JOIN \n" +
+                                        "    s.Width\n" +
+                                        "FROM PartCheck.dbo.MagazynExtra m\n" +
+                                        "Left JOIN \n" +
                                         "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m2 ON m.MagazynID = m2.MagazynID AND m2.[Date] = max_dates.max_date\n" +
-                                        "INNER JOIN \n" +
-                                        "    PartCheck.dbo.MagazynExtra m3 ON m.MagazynID = m3.MagazynID AND m3.[Date] = max_dates.max_date\n" +
-                                        "WHERE \n" +
-                                        "    NOT EXISTS (\n" +
+                                        "        where  NOT EXISTS (\n" +
                                         "        SELECT 1\n" +
                                         "        FROM \n" +
                                         "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                         "        WHERE \n" +
                                         "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "    ) AND m.PartID LIKE '"+editTextValue+"%' and m3.Localization="+selectedValue+" order by m.[Date] desc;";
+                                        "    ) and m.PartID LIKE '"+editTextValue+"%' and m.Localization="+selectedValue+"\n" +
+                                        "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
+                                        "order by MAX(m.[Date]) DESC;";
                             }
 
 
@@ -285,9 +244,9 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
                                 } else if (j == 1) {
-                                    headerTextView.setText("Data");
-                                } else if (j == 2) {
                                     headerTextView.setText("Lokalizacja");
+                                } else if (j == 2) {
+                                    headerTextView.setText("Ilość");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -303,9 +262,10 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     if (j == 0) {
                                         textView.setText(rs.getString("PartID"));
                                     } else if (j == 1) {
-                                        textView.setText(rs.getString("data"));
-                                    } else if (j == 2) {
                                         textView.setText("Lok " + rs.getString("Localization"));
+                                    }
+                                    else if (j == 2) {
+                                        textView.setText(rs.getString("Ilosc"));
                                     }
 
                                     dataRow.addView(textView);
