@@ -133,7 +133,10 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String insertQuery = "DELETE FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? AND Date = (SELECT MIN(Date) FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ?)";
+                String insertQuery = "UPDATE PartCheck.dbo.MagazynExtra\n" +
+                        "SET Deleted = 1\n" +
+                        "WHERE PartID = ? and Localization = ? \n" +
+                        "AND Date = (SELECT MIN(Date) FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? and Localization = ? and Deleted = 0)";
 
                 try (PreparedStatement deleteStatement = connection.prepareStatement(insertQuery)) {
                     deleteStatement.setString(1, name);
@@ -145,7 +148,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
                     if (rowsDeleted > 0) {
                         Toast.makeText(opcjeustallokalizacje.this, "Arkusz został usunięty", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(opcjeustallokalizacje.this, "Błąd", Toast.LENGTH_LONG).show();
+                        Toast.makeText(opcjeustallokalizacje.this, "Arkusza nie ma w tej lokalizacji", Toast.LENGTH_LONG).show();
                     }
 
                     finish();
@@ -156,7 +159,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             }
         });
 
-        String spinnerselect = "SELECT DISTINCT Localization FROM PartCheck.dbo.MagazynExtra WHERE PartID = ?";
+        String spinnerselect = "SELECT DISTINCT Localization FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? and Deleted = 0";
         List<String> localizations = new ArrayList<>();
 
         try (PreparedStatement spinnerStatement = connection.prepareStatement(spinnerselect)) {
@@ -186,7 +189,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String deleteQuery = "DELETE FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? AND Date = (SELECT MIN(Date) FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ?)";
+                String deleteQuery = "DELETE FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? and Deleted = 0 AND Date = (SELECT MIN(Date) FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? and Deleted = 0)";
 
                 try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
                     deleteStatement.setString(1, name);

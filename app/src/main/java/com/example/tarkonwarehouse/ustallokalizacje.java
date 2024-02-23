@@ -35,7 +35,7 @@ public class ustallokalizacje extends AppCompatActivity {
     private int number = 0 ;
     private String name;
 
-    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15, recznie, koop;
+    ToggleButton check1, check2, check3, check4, check5, check6, check7,check8,check9,check10,check11,check12,check13,check14, check15, recznie, koop, zew;
 
 
 
@@ -189,6 +189,7 @@ public class ustallokalizacje extends AppCompatActivity {
         check15 = findViewById(R.id.check15);
         koop = findViewById(R.id.koop);
         recznie = findViewById(R.id.recznie);
+        zew = findViewById(R.id.zew);
 
         check1.setBackgroundTintList(null);
         check2.setBackgroundTintList(null);
@@ -207,6 +208,7 @@ public class ustallokalizacje extends AppCompatActivity {
         check15.setBackgroundTintList(null);
         koop.setBackgroundTintList(null);
         recznie.setBackgroundTintList(null);
+        zew.setBackgroundTintList(null);
 
         // Przypisanie obsługi zdarzenia kliknięcia do każdego przycisku
         check1.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +339,14 @@ public class ustallokalizacje extends AppCompatActivity {
             }
         });
 
+        zew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uncheckOtherButtons(zew);
+                number = 17;
+            }
+        });
+
         recznie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -370,7 +380,7 @@ public class ustallokalizacje extends AppCompatActivity {
     private void uncheckOtherButtons(ToggleButton currentButton) {
         // Wyłącz wszystkie inne przyciski oprócz tego, który został kliknięty
         if (currentButton != null) {
-            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6, check7, check8, check9, check10, check11, check12, check13, check14, check15, koop};
+            ToggleButton[] buttons = {check1, check2, check3, check4, check5, check6, check7, check8, check9, check10, check11, check12, check13, check14, check15, koop, zew};
             for (ToggleButton button : buttons) {
                 if (button == currentButton) {
                     // Ustaw tło na zielony dla aktualnie klikniętego przycisku

@@ -207,6 +207,15 @@
             android:textOff="@string/koop"
             />
 
+        <ToggleButton
+            android:id="@+id/zew"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_weight="0.4"
+            android:textOn="@string/koopo"
+            android:textOff="@string/zew"
+            />
+
 
 
         <ToggleButton

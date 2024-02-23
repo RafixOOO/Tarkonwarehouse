@@ -54,7 +54,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
         jwtToken = getIntent().getStringExtra("user");
 
         List<String> numbersList = new ArrayList<>();
-        for (int i = 0; i <= 15; i++) {
+        for (int i = 0; i <= 17; i++) {
             numbersList.add(String.valueOf(i));
         }
 
@@ -111,6 +111,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     "    m.Person,\n" +
                                     "    m.Localization,\n" +
                                     "    COUNT(m.PartID) AS Ilosc,\n" +
+                                    "COUNT(sh1.SheetName) as zuzyte," +
                                     "    s.Material,\n" +
                                     "    s.Thickness,\n" +
                                     "    s.[Length],\n" +
@@ -118,13 +119,15 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     "FROM PartCheck.dbo.MagazynExtra m\n" +
                                     "Left JOIN \n" +
                                     "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
+                                    "LEFT JOIN \n" +
+                                    "   SNDBASE_PROD.dbo.StockArchive sh1 on m.PartID=sh1.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS" +
                                     "        where  NOT EXISTS (\n" +
                                     "        SELECT 1\n" +
                                     "        FROM \n" +
                                     "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                     "        WHERE \n" +
-                                    "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                    "    ) and m.Localization = ? \n" +
+                                    "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS and sh.Qty=0\n" +
+                                    "    ) and m.Localization = ? and Deleted = 0 \n" +
                                     "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
                                     "order by MAX(m.[Date]) DESC;";
 
@@ -137,7 +140,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             TableRow headerRow = new TableRow(zajdzlokalizacje.this);
 
                             // Dodaj nagłówki
-                            for (int j = 0; j < 3; j++) {
+                            for (int j = 0; j < 4; j++) {
                                 TextView headerTextView = new TextView(zajdzlokalizacje.this);
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
@@ -145,6 +148,8 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     headerTextView.setText("Lokalizacja");
                                 } else if (j == 2) {
                                     headerTextView.setText("Ilość");
+                                } else if (j == 3) {
+                                    headerTextView.setText("Zużyte");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -163,6 +168,8 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         textView.setText("Lok " + rs.getString("Localization"));
                                     } else if (j == 2) {
                                         textView.setText(rs.getString("Ilosc"));
+                                    } else if (j == 3) {
+                                        textView.setText(rs.getString("zuzyte"));
                                     }
 
                                     dataRow.addView(textView);
@@ -189,6 +196,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "    m.Person,\n" +
                                         "    m.Localization,\n" +
                                         "    COUNT(m.PartID) AS Ilosc,\n" +
+                                        "COUNT(sh1.SheetName) as zuzyte," +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
                                         "    s.[Length],\n" +
@@ -196,13 +204,15 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "FROM PartCheck.dbo.MagazynExtra m\n" +
                                         "Left JOIN \n" +
                                         "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
+                                        "LEFT JOIN \n" +
+                                        "   SNDBASE_PROD.dbo.StockArchive sh1 on m.PartID=sh1.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS" +
                                         "        where  NOT EXISTS (\n" +
                                         "        SELECT 1\n" +
                                         "        FROM \n" +
                                         "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                         "        WHERE \n" +
-                                        "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "    ) and m.PartID LIKE '"+editTextValue+"%'\n" +
+                                        "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS and sh.Qty=0\n" +
+                                        "    ) and m.PartID LIKE '"+editTextValue+"%' and Deleted = 0\n" +
                                         "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
                                         "order by MAX(m.[Date]) DESC;";
                             }else{
@@ -212,20 +222,23 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "    m.Person,\n" +
                                         "    m.Localization,\n" +
                                         "    COUNT(m.PartID) AS Ilosc,\n" +
+                                        "COUNT(sh1.SheetName) as zuzyte," +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
                                         "    s.[Length],\n" +
                                         "    s.Width\n" +
                                         "FROM PartCheck.dbo.MagazynExtra m\n" +
                                         "Left JOIN \n" +
-                                        "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
+                                        "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS and sh.Qty=0\n" +
+                                        "LEFT JOIN \n" +
+                                        "   SNDBASE_PROD.dbo.StockArchive sh1 on m.PartID=sh1.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS" +
                                         "        where  NOT EXISTS (\n" +
                                         "        SELECT 1\n" +
                                         "        FROM \n" +
                                         "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                         "        WHERE \n" +
                                         "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                        "    ) and m.PartID LIKE '"+editTextValue+"%' and m.Localization="+selectedValue+"\n" +
+                                        "    ) and m.PartID LIKE '"+editTextValue+"%' and m.Localization="+selectedValue+" and Deleted = 0 \n" +
                                         "group by m.PartID,m.Person,m.Localization,s.Material,s.Thickness,s.[Length],s.Width\n" +
                                         "order by MAX(m.[Date]) DESC;";
                             }
@@ -239,7 +252,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             TableRow headerRow = new TableRow(zajdzlokalizacje.this);
 
                             // Dodaj nagłówki
-                            for (int j = 0; j < 3; j++) {
+                            for (int j = 0; j < 4; j++) {
                                 TextView headerTextView = new TextView(zajdzlokalizacje.this);
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
@@ -247,6 +260,8 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     headerTextView.setText("Lokalizacja");
                                 } else if (j == 2) {
                                     headerTextView.setText("Ilość");
+                                } else if (j == 3) {
+                                    headerTextView.setText("Zużyte");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -257,7 +272,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             // Dodaj dane
                             while (rs.next()) {
                                 TableRow dataRow = new TableRow(zajdzlokalizacje.this);
-                                for (int j = 0; j < 3; j++) {
+                                for (int j = 0; j < 4; j++) {
                                     TextView textView = new TextView(zajdzlokalizacje.this);
                                     if (j == 0) {
                                         textView.setText(rs.getString("PartID"));
@@ -266,6 +281,8 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     }
                                     else if (j == 2) {
                                         textView.setText(rs.getString("Ilosc"));
+                                    } else if (j == 3) {
+                                        textView.setText(rs.getString("zuzyte"));
                                     }
 
                                     dataRow.addView(textView);
