@@ -212,7 +212,7 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:layout_weight="0.4"
-            android:textOn="@string/koopo"
+            android:textOn="@string/zew1"
             android:textOff="@string/zew"
             />
 
