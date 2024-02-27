@@ -55,7 +55,16 @@ public class zajdzlokalizacje extends AppCompatActivity {
 
         List<String> numbersList = new ArrayList<>();
         for (int i = 0; i <= 17; i++) {
-            numbersList.add(String.valueOf(i));
+            if(i==16){
+                numbersList.add("koop");
+
+            }else if (i==17){
+                numbersList.add("zewn");
+
+            }else{
+                numbersList.add(String.valueOf(i));
+
+            }
         }
 
         // Tworzenie adaptera
@@ -103,7 +112,11 @@ public class zajdzlokalizacje extends AppCompatActivity {
 
                     }else if(!selectedValue.equals("0") && editTextValue.isEmpty()){
                         try{
-
+                            if ("koop".equals(selectedValue)) {
+                                selectedValue = "16";
+                            } else if ("zewn".equals(selectedValue)) {
+                                selectedValue = "17";
+                            }
 
                             String query = "SELECT \n" +
                                     "    m.PartID,\n" +
@@ -165,7 +178,18 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     if (j == 0) {
                                         textView.setText(rs.getString("PartID"));
                                     }  else if (j == 1) {
-                                        textView.setText("Lok " + rs.getString("Localization"));
+                                        String localization = rs.getString("Localization");
+                                        String textToShow;
+
+                                        if ("16".equals(localization)) {
+                                            textToShow = "kooperacja";
+                                        } else if ("17".equals(localization)) {
+                                            textToShow = "zewnetrznie";
+                                        } else {
+                                            textToShow = localization;
+                                        }
+
+                                        textView.setText(textToShow);
                                     } else if (j == 2) {
                                         textView.setText(rs.getString("Ilosc"));
                                     } else if (j == 3) {
@@ -189,6 +213,11 @@ public class zajdzlokalizacje extends AppCompatActivity {
 
                         try{
                             String query;
+                            if ("koop".equals(selectedValue)) {
+                                selectedValue = "16";
+                            } else if ("zewn".equals(selectedValue)) {
+                                selectedValue = "17";
+                            }
                             if(selectedValue.equals("0")){
                                 query = "SELECT \n" +
                                         "    m.PartID,\n" +
@@ -277,7 +306,18 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     if (j == 0) {
                                         textView.setText(rs.getString("PartID"));
                                     } else if (j == 1) {
-                                        textView.setText("Lok " + rs.getString("Localization"));
+                                        String localization = rs.getString("Localization");
+                                        String textToShow;
+
+                                        if ("16".equals(localization)) {
+                                            textToShow = "kooperacja";
+                                        } else if ("17".equals(localization)) {
+                                            textToShow = "zewnetrznie";
+                                        } else {
+                                            textToShow = localization;
+                                        }
+
+                                        textView.setText(textToShow);
                                     }
                                     else if (j == 2) {
                                         textView.setText(rs.getString("Ilosc"));
