@@ -49,13 +49,13 @@
     <string name="przn">Przenieś</string>
     <string name="send">Wyślij</string>
     <string name="arkusz">Nazwa Arkusza</string>
-    <string name="koop">Kooperacja</string>
+    <string name="koop">KOOP</string>
     <string name="koopo">Kooperacja(Aktywne)</string>
     <string name="dodaj1">Dodaj jako nowe</string>
     <string name="dodaj2">Dodaj</string>
     <string name="przenies2">Przenieś</string>
     <string name="usun1">Usuń</string>
     <string name="textprzn">Przenieś z lokalizacji:</string>
-    <string name="zew">ZEWNĄTRZ</string>
+    <string name="zew">ZEWN</string>
 
 </resources>
