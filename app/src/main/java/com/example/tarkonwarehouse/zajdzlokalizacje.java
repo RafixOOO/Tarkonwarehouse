@@ -123,7 +123,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     "    MAX(m.[Date]) AS data,\n" +
                                     "    m.Person,\n" +
                                     "    m.Localization,\n" +
-                                    "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization) AS Ilosc,\n" +
+                                    "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                     "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
                                     "    s.Material,\n" +
                                     "    s.Thickness,\n" +
@@ -228,7 +228,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "    MAX(m.[Date]) AS data,\n" +
                                         "    m.Person,\n" +
                                         "    m.Localization,\n" +
-                                        "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization) AS Ilosc,\n" +
+                                        "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                         "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
@@ -258,7 +258,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "    MAX(m.[Date]) AS data,\n" +
                                         "    m.Person,\n" +
                                         "    m.Localization,\n" +
-                                        "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization) AS Ilosc,\n" +
+                                        "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                         "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
                                         "    s.Material,\n" +
                                         "    s.Thickness,\n" +
