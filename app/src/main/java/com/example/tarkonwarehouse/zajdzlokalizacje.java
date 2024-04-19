@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,13 +100,25 @@ public class zajdzlokalizacje extends AppCompatActivity {
             }
         });
 
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Wywołaj akcję przycisku, np. kliknięcie
+                    button.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Connection connection = connectionclass();
-                String editTextValue = editText.getText().toString().toUpperCase();
+                String editTextValue = editText.getText().toString().trim().toUpperCase();
                 if (connection != null) {
                     if(selectedValue.equals("0") && editTextValue.isEmpty()){
                         Toast.makeText(zajdzlokalizacje.this, "Nie wybrano lokalizacji lub pole tekstowe jest puste", Toast.LENGTH_LONG).show();
@@ -247,7 +260,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "            and sh.Qty=0\n" +
                                         "    ) and m.PartID LIKE '"+editTextValue+"%' and Deleted = 0\n" +
                                         "GROUP BY\n" +
-                                        "    m.PartID m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                        "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                                         "ORDER BY\n" +
                                         "    MAX(m.[Date]) DESC;";
                             }else{
@@ -276,7 +289,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "            and sh.Qty=0\n" +
                                         "    ) and m.PartID LIKE '"+editTextValue+"%' and m.Localization="+selectedValue+" and Deleted = 0\n" +
                                         "GROUP BY\n" +
-                                        "    m.PartID m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                        "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                                         "ORDER BY\n" +
                                         "    MAX(m.[Date]) DESC;";
                             }

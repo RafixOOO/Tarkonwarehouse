@@ -54,11 +54,10 @@ public class ustallokalizacje extends AppCompatActivity {
         edittext.requestFocus();
         Button button = findViewById(R.id.button1);
         Button button1 = findViewById(R.id.button);
-        edittext.requestFocus();
-        edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        edittext.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Wywołaj akcję przycisku, np. kliknięcie
                     button.performClick();
                     return true;
@@ -66,7 +65,33 @@ public class ustallokalizacje extends AppCompatActivity {
                 return false;
             }
         });
+
+        edittext.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Wywołaj akcję przycisku, np. kliknięcie
+                    button.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        edittext1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Wywołaj akcję przycisku, np. kliknięcie
+                    button1.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         Connection connection = connectionclass();
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +148,7 @@ public class ustallokalizacje extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                name = edittext1.getText().toString().toUpperCase();
+                name = edittext1.getText().toString().trim().toUpperCase();
                 edittext1.setText("");
 
                 if (connection != null) {
