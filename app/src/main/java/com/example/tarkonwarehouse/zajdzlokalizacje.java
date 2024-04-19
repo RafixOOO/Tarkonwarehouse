@@ -304,6 +304,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 headerRow.addView(headerTextView);
                             }
 
+
                             // Dodaj nagłówki do tabeli
                             tableLayout.addView(headerRow);
 
