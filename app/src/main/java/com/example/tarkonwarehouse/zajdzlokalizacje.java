@@ -121,7 +121,6 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             String query = "SELECT\n" +
                                     "    m.PartID,\n" +
                                     "    MAX(m.[Date]) AS data,\n" +
-                                    "    m.Person,\n" +
                                     "    m.Localization,\n" +
                                     "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                     "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
@@ -144,7 +143,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     "            and sh.Qty=0\n" +
                                     "    ) and m.Localization = ? and Deleted = 0\n" +
                                     "GROUP BY\n" +
-                                    "    m.PartID, m.Person, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                    "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                                     "ORDER BY\n" +
                                     "    MAX(m.[Date]) DESC;";
 
@@ -162,7 +161,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
                                 } else if (j == 1) {
-                                    headerTextView.setText("Lokalizacja");
+                                    headerTextView.setText("Lok");
                                 } else if (j == 2) {
                                     headerTextView.setText("Ilość");
                                 } else if (j == 3) {
@@ -226,7 +225,6 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 query =  "SELECT\n" +
                                         "    m.PartID,\n" +
                                         "    MAX(m.[Date]) AS data,\n" +
-                                        "    m.Person,\n" +
                                         "    m.Localization,\n" +
                                         "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                         "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
@@ -249,14 +247,13 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "            and sh.Qty=0\n" +
                                         "    ) and m.PartID LIKE '"+editTextValue+"%' and Deleted = 0\n" +
                                         "GROUP BY\n" +
-                                        "    m.PartID, m.Person, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                        "    m.PartID m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                                         "ORDER BY\n" +
                                         "    MAX(m.[Date]) DESC;";
                             }else{
                                 query =  "SELECT\n" +
                                         "    m.PartID,\n" +
                                         "    MAX(m.[Date]) AS data,\n" +
-                                        "    m.Person,\n" +
                                         "    m.Localization,\n" +
                                         "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                         "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
@@ -279,7 +276,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                         "            and sh.Qty=0\n" +
                                         "    ) and m.PartID LIKE '"+editTextValue+"%' and m.Localization="+selectedValue+" and Deleted = 0\n" +
                                         "GROUP BY\n" +
-                                        "    m.PartID, m.Person, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                        "    m.PartID m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                                         "ORDER BY\n" +
                                         "    MAX(m.[Date]) DESC;";
                             }
@@ -298,7 +295,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 if (j == 0) {
                                     headerTextView.setText("Arkusz");
                                 } else if (j == 1) {
-                                    headerTextView.setText("Lokalizacja");
+                                    headerTextView.setText("Lok");
                                 } else if (j == 2) {
                                     headerTextView.setText("Ilość");
                                 } else if (j == 3) {
