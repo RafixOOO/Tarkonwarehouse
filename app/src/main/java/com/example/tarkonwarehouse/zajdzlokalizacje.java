@@ -114,6 +114,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
 
 
         button.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
 
@@ -176,9 +177,9 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 } else if (j == 1) {
                                     headerTextView.setText("Lok");
                                 } else if (j == 2) {
-                                    headerTextView.setText("Ilość");
+                                    headerTextView.setText("Ilo");
                                 } else if (j == 3) {
-                                    headerTextView.setText("Zużyte");
+                                    headerTextView.setText("Zuż");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -192,7 +193,7 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 for (int j = 0; j < 4; j++) {
                                     TextView textView = new TextView(zajdzlokalizacje.this);
                                     if (j == 0) {
-                                        textView.setText(rs.getString("PartID"));
+                                        textView.setText(rs.getString("PartID")+" "+rs.getString("Thickness"));
                                     }  else if (j == 1) {
                                         String localization = rs.getString("Localization");
                                         String textToShow;
@@ -310,9 +311,9 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                 } else if (j == 1) {
                                     headerTextView.setText("Lok");
                                 } else if (j == 2) {
-                                    headerTextView.setText("Ilość");
+                                    headerTextView.setText("Ilo");
                                 } else if (j == 3) {
-                                    headerTextView.setText("Zużyte");
+                                    headerTextView.setText("Zuż");
                                 }
                                 headerRow.addView(headerTextView);
                             }
@@ -324,10 +325,10 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             // Dodaj dane
                             while (rs.next()) {
                                 TableRow dataRow = new TableRow(zajdzlokalizacje.this);
-                                for (int j = 0; j < 4; j++) {
+                                for (int j = 0; j < 5; j++) {
                                     TextView textView = new TextView(zajdzlokalizacje.this);
                                     if (j == 0) {
-                                        textView.setText(rs.getString("PartID"));
+                                        textView.setText(rs.getString("PartID")+" "+rs.getString("Thickness"));
                                     } else if (j == 1) {
                                         String localization = rs.getString("Localization");
                                         String textToShow;
