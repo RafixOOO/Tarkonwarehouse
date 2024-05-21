@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -57,6 +58,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             finish(); // Dodaj finish, aby zakończyć bieżącą aktywność, jeśli nie ma tokenu
         }
 
+        EditText editdodaj = findViewById(R.id.editdodaj);
         Button dodaj = findViewById(R.id.dodaj);
         Button przen = findViewById(R.id.przenies);
         Spinner spinner = findViewById(R.id.spinner);
@@ -176,6 +178,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                editdodaj.setVisibility(View.VISIBLE);
                 dodaj.setVisibility(View.VISIBLE);
                 przen.setVisibility(View.GONE);
                 spinner.setVisibility(View.GONE);
@@ -188,6 +191,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                editdodaj.setVisibility(View.GONE);
                 dodaj.setVisibility(View.GONE);
                 przen.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.VISIBLE);
@@ -202,16 +206,29 @@ public class opcjeustallokalizacje extends AppCompatActivity {
         dodaj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int ilosc1 = 0;
+
+                if(editdodaj.getText().toString().isEmpty()){
+                    ilosc1=1;
+                }else{
+                    ilosc1 = Integer.parseInt(String.valueOf(editdodaj.getText()));
+                }
+
+
+
 
                 String insertQuery = "INSERT INTO PartCheck.dbo.MagazynExtra (PartID, Person, Localization) VALUES (?, ?, ?)";
-
+                
+                    
+                
                 try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+                    for(int i=1;i<=ilosc1;i++){
                     insertStatement.setString(1, name);
                     insertStatement.setString(2, jwtToken);
                     insertStatement.setInt(3, number);
 
                     insertStatement.executeUpdate();
-
+                }
                     Toast.makeText(opcjeustallokalizacje.this, "Arkusz został dodany", Toast.LENGTH_LONG).show();
 
                     finish();
