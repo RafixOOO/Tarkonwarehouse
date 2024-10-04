@@ -68,7 +68,8 @@
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="30dp"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:hint="@string/liczba" />
 
     </LinearLayout>
 
@@ -99,7 +100,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="30dp"
             android:inputType="number"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:hint="@string/haslo1" />
 
     </LinearLayout>
 

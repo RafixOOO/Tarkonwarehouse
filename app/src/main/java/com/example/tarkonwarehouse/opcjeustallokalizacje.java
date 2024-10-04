@@ -30,6 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class opcjeustallokalizacje extends AppCompatActivity {
@@ -60,6 +61,8 @@ public class opcjeustallokalizacje extends AppCompatActivity {
 
         EditText editdodaj = findViewById(R.id.editdodaj);
         Button dodaj = findViewById(R.id.dodaj);
+        EditText editusun = findViewById(R.id.editusun);
+        Button usun = findViewById(R.id.usun);
         Button przen = findViewById(R.id.przenies);
         Spinner spinner = findViewById(R.id.spinner);
         TextView text = findViewById(R.id.text);
@@ -68,6 +71,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
 
         Button opcja1 = findViewById(R.id.opcja1);
         Button opcja2 = findViewById(R.id.opcja2);
+        Button opcja3 = findViewById(R.id.opcja3);
 
         try{
         Connection connection = connectionclass();
@@ -180,6 +184,8 @@ public class opcjeustallokalizacje extends AppCompatActivity {
 
                 editdodaj.setVisibility(View.VISIBLE);
                 dodaj.setVisibility(View.VISIBLE);
+                editusun.setVisibility(View.GONE);
+                usun.setVisibility(View.GONE);
                 przen.setVisibility(View.GONE);
                 spinner.setVisibility(View.GONE);
                 text.setVisibility(View.GONE);
@@ -193,9 +199,26 @@ public class opcjeustallokalizacje extends AppCompatActivity {
 
                 editdodaj.setVisibility(View.GONE);
                 dodaj.setVisibility(View.GONE);
+                editusun.setVisibility(View.GONE);
+                usun.setVisibility(View.GONE);
                 przen.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.VISIBLE);
                 text.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        opcja3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                editdodaj.setVisibility(View.GONE);
+                dodaj.setVisibility(View.GONE);
+                editusun.setVisibility(View.VISIBLE);
+                usun.setVisibility(View.VISIBLE);
+                przen.setVisibility(View.GONE);
+                spinner.setVisibility(View.GONE);
+                text.setVisibility(View.GONE);
 
             }
         });
@@ -236,6 +259,62 @@ public class opcjeustallokalizacje extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(opcjeustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        usun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int today = calendar.get(Calendar.DAY_OF_WEEK);
+
+                if (today != Calendar.MONDAY) {
+                    // Ustal na ostatni poniedziałek
+                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                }
+
+// Pobierz dzień i miesiąc
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH) + 1; // Dodajemy 1, bo miesiące są liczone od 0
+                int dzienMiesiac = (day * 100) + month; // Tworzymy liczbę w formacie ddMM
+
+                int haslo = dzienMiesiac; // 3009, gdy jest 30 września
+                String inputText = editusun.getText().toString();
+                int haslocheck = 0; // Inicjalizuj zmienną
+
+                if (!inputText.isEmpty()) {
+                    haslocheck = Integer.parseInt(inputText);
+                }
+
+// Wypisz wartości do logów
+                Log.d("MyApp", "Wartość hasło: " + haslo);
+                Log.d("MyApp", "Wartość haslocheck: " + haslocheck);
+
+// Porównanie hasła
+                if (haslocheck == haslo) {
+                    String deleteQuery = "DELETE FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? and Deleted = 0 AND Date = (SELECT MIN(Date) FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? AND Localization = ? and Deleted = 0)";
+
+                    try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+                        deleteStatement.setString(1, name);
+                        deleteStatement.setInt(2, number);
+                        deleteStatement.setString(3, name);
+                        deleteStatement.setInt(4, number);
+
+                        int rowsDeleted = deleteStatement.executeUpdate();
+                        if (rowsDeleted > 0) {
+                            Toast.makeText(opcjeustallokalizacje.this, "Arkusz został usunięty", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Toast.makeText(opcjeustallokalizacje.this, "Błąd", Toast.LENGTH_LONG).show();
+                        }
+                    }catch (SQLException e) {
+                        e.printStackTrace();
+                        Toast.makeText(opcjeustallokalizacje.this, "Wystąpił błąd podczas dostępu do bazy danych", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(opcjeustallokalizacje.this, "Złe hasło", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

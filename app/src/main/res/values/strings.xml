@@ -58,5 +58,7 @@
     <string name="textprzn">Przenieś z lokalizacji:</string>
     <string name="zew">ZEWN</string>
     <string name="zew1">ZEWN(Aktywne)</string>
+    <string name="liczba">Wprowadź liczbe arkuszy…</string>
+    <string name="haslo1">Podaj hasło…</string>
 
 </resources>
