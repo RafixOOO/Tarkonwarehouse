@@ -41,7 +41,7 @@ public class login extends AppCompatActivity {
         Connection connection = connectionclass();
         try {
             if (connection != null) {
-                String query = "SELECT imie_nazwisko FROM PartCheck.dbo.Persons where [user] = '' ;";
+                String query = "SELECT distinct imie_nazwisko FROM PartCheck.dbo.Persons where [user] = '' ;";
                 Statement st = connection.createStatement();
                 ResultSet rs = st.executeQuery(query);
 
