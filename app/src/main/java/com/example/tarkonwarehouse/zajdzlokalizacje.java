@@ -135,6 +135,16 @@ public class zajdzlokalizacje extends AppCompatActivity {
                             String query = "SELECT\n" +
                                     "    m.PartID,\n" +
                                     "    MAX(m.[Date]) AS data,\n" +
+                                    "    (\n" +
+                                    "        SELECT STRING_AGG( Person, ', ')\n" +
+                                    "        FROM (\n" +
+                                    "            SELECT DISTINCT Person\n" +
+                                    "            FROM PartCheck.dbo.MagazynExtra\n" +
+                                    "            WHERE PartID = m.PartID\n" +
+                                    "                AND Localization = m.Localization\n" +
+                                    "                AND Deleted = 0\n" +
+                                    "        ) AS distinct_persons\n" +
+                                    "    ) AS Persons,\n" +
                                     "    m.Localization,\n" +
                                     "    (SELECT COUNT(l.PartID) from PartCheck.dbo.MagazynExtra l where l.PartID=m.PartID and l.Localization=m.Localization and l.Deleted=0) AS Ilosc,\n" +
                                     "    (SELECT COUNT(h.SheetName) from SNDBASE_PROD.dbo.StockArchive h where h.SheetName=sh1.SheetName) as zuzyte,\n" +
@@ -148,16 +158,17 @@ public class zajdzlokalizacje extends AppCompatActivity {
                                     "    SNDBASE_PROD.dbo.Stock s ON m.PartID = s.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
                                     "LEFT JOIN\n" +
                                     "    SNDBASE_PROD.dbo.StockArchive sh1 on m.PartID=sh1.SheetName COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                    "WHERE NOT EXISTS (\n" +
+                                    "WHERE m.Deleted = 0 and NOT EXISTS (\n" +
                                     "        SELECT 1\n" +
                                     "        FROM\n" +
                                     "            SNDBASE_PROD.dbo.StockArchive sh\n" +
                                     "        WHERE\n" +
                                     "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
-                                    "            and sh.Qty=0\n" +
-                                    "    ) and m.Localization = ? and Deleted = 0\n" +
+                                    "            and sh1.Qty=0\n" +
+                                    "    )\n" +
+                                    "    and m.Localization = ?\n" +
                                     "GROUP BY\n" +
-                                    "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
+                                    "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName, m.Deleted\n" +
                                     "ORDER BY\n" +
                                     "    MAX(m.[Date]) DESC;";
 
