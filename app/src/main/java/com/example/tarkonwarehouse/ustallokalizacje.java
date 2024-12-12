@@ -100,7 +100,7 @@ public class ustallokalizacje extends AppCompatActivity {
 
                 if (connection != null) {
                     if (number != 0) {
-                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ?";
+                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? and Deleted = 0";
                         PreparedStatement checkStatement = null;
                         ResultSet resultSet = null;
                         try {
@@ -153,7 +153,7 @@ public class ustallokalizacje extends AppCompatActivity {
 
                 if (connection != null) {
                     if (number != 0) {
-                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ?";
+                        String checkQuery = "SELECT PartID FROM PartCheck.dbo.MagazynExtra WHERE PartID = ? and Deleted = 0";
                         PreparedStatement checkStatement = null;
                         ResultSet resultSet = null;
                         try {
