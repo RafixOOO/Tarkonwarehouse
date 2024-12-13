@@ -103,7 +103,7 @@ public class opcjeustallokalizacje extends AppCompatActivity {
                         "        WHERE\n" +
                         "            sh.SheetName = m.PartID COLLATE SQL_Latin1_General_CP1_CI_AS\n" +
                         "            and sh.Qty=0\n" +
-                        "    ) and m.PartID='"+name+"'\n" +
+                        "    ) and m.PartID='"+name+"' and Deleted=0\n" +
                         "GROUP BY\n" +
                         "    m.PartID, m.Localization, s.Material, s.Thickness, s.[Length], s.Width, sh1.SheetName\n" +
                         "ORDER BY\n" +
