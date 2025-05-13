@@ -85,7 +85,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selectedUsername = (String) usernameSpinner.getSelectedItem();
-                Intent intent = new Intent(login.this, main.class);
+                Intent intent = new Intent(login.this, magazyn.class);
                 intent.putExtra("user", selectedUsername);
                 startActivity(intent);
                 finish();

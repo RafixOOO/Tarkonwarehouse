@@ -63,8 +63,8 @@ public class magazyn extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.main){
-            Intent intent = new Intent(this, main.class);
+        if(item.getItemId() == R.id.magazyn){
+            Intent intent = new Intent(this, magazyn.class);
             intent.putExtra("user", jwtToken);
             startActivity(intent);
             return true;

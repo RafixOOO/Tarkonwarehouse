@@ -54,7 +54,7 @@ public class main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-         if(item.getItemId() == R.id.main){
+         if(item.getItemId() == R.id.magazyn){
             return true;
         }
         else if (item.getItemId() == R.id.logout) {
